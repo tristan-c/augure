@@ -2,7 +2,7 @@
 # coding: utf-8
 import time, os , json, logging
 import schedule, requests
-from envelopes import Envelope, GMailSMTP
+from envelopes import Envelope, SMTP
 from .daemon3 import daemon as Daemon
 
 class Worker(Daemon):
@@ -65,8 +65,9 @@ class Worker(Daemon):
 
         try:
             self.logger.debug("Sending mail")
-            envelope.send('smtp.googlemail.com', login=self.config["emailLogin"],
-                  password=self.config["emailPassword"], tls=True)
+            # envelope.send('smtp.googlemail.com', login=self.config["emailLogin"],
+            #       password=self.config["emailPassword"], tls=True)
+            envelope.send('localhost', port=25)
             self.logger.debug("Mail sent")
         except Exception as e:
             self.logger.error(e)
