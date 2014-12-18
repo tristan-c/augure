@@ -30,12 +30,19 @@ class Worker(Daemon):
 
     def check(self):
         for url in self.config['urls']:
-            r = requests.get(url)
-            if r.status_code != 200:
-                message = "%s: status %s" % (url,r.status_code)
+            r = None
+            try:
+                r = requests.get(url)
+            except:
+                pass
+
+            if not r or r.status_code != 200:
+                message = "%s is not accessible" % (url)
+                if r and r.status_code:
+                    message = "%s, status %s" % (message,r.status_code)
                 self.logger.warning(message)
 
-                if self.config['emailRecipient']:
+                if self.config.get('emailRecipient',None):
                     self.sendMail(message)
 
     def sendMail(self,text):
@@ -43,7 +50,7 @@ class Worker(Daemon):
 
         envelope = Envelope(
             from_addr=('augure@augure.nowhere'),
-            to_addr=(self.config['emailRecipient']),
+            to_addr=self.config.get('emailRecipient',None),
             subject='Augure has spoken',
             text_body=text
         )
