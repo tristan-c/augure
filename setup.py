@@ -44,7 +44,7 @@ setup(
 	keywords=u('## Set keywords'),
 	packages=['augure'],
     scripts=['scripts/augure'],
-	install_requires=['carotte','docopt'],
+	install_requires=['envelopes','schedule','requests'],
 	classifiers=[
 		'Intended Audience :: Developers',
 		'Natural Language :: English',
