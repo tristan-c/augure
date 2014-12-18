@@ -9,6 +9,7 @@ class Worker(Daemon):
     def __init__(self, *args, **kwargs):
         super(Worker, self).__init__(*args, **kwargs)
         self.config = None
+        self.urlStates = {}
 
     def run(self):
         if not self.config:
@@ -43,7 +44,14 @@ class Worker(Daemon):
                 self.logger.warning(message)
 
                 if self.config.get('emailRecipient',None):
-                    self.sendMail(message)
+
+                    # if state was ok before (anti spam)
+                    if self.urlStates.get(url,True):
+                        self.urlStates[url] = False
+                        self.sendMail(message)
+
+            else:
+                self.urlStates[url] = True
 
     def sendMail(self,text):
         self.logger.debug("Building mail")
@@ -51,7 +59,7 @@ class Worker(Daemon):
         envelope = Envelope(
             from_addr=('augure@augure.nowhere'),
             to_addr=self.config.get('emailRecipient',None),
-            subject='Augure has spoken',
+            subject='The Augure has spoken',
             text_body=text
         )
 
@@ -92,7 +100,7 @@ class Worker(Daemon):
             logging.basicConfig(
                 format='%(asctime)s %(levelname)s:%(message)s',
                 filename=path,
-                level=logging.INFO
+                level=logging.WARNING
             )
         self.logger = logging.getLogger(__name__)
 
