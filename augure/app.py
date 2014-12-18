@@ -72,7 +72,8 @@ class Worker(Daemon):
                 self.config = data
                 return data
         except Exception as e:
-            self.logger.error(e)
+            logging.error(e)
+            raise Exception("Error in %s: %s" % (configFile,e))
 
 
     def initLogger(self,path="%s%s" % (os.path.expanduser("~"),"/augure.log")):
@@ -81,5 +82,5 @@ class Worker(Daemon):
             filename=path,
             level=logging.INFO
         )
-        self.logger = logging.getself.logger(__name__)
+        self.logger = logging.getLogger(__name__)
 
