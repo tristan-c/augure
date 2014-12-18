@@ -14,7 +14,11 @@ class Worker(Daemon):
         if not self.config:
             self.config = self.loadConfiguration()
 
-        self.initLogger(self.config.get("logPath",None))
+        logPath = self.config.get("logPath",None)
+        if logPath:
+            self.initLogger(logPath)
+        else:
+            self.initLogger("%s%s" % (os.path.expanduser("~"),"/augure.log"))
 
         self.logger.info("Augure is watching")
         schedule.every().minute.do(self.check)
@@ -76,11 +80,12 @@ class Worker(Daemon):
             raise Exception("Error in %s: %s" % (configFile,e))
 
 
-    def initLogger(self,path="%s%s" % (os.path.expanduser("~"),"/augure.log")):
-        logging.basicConfig(
-            format='%(asctime)s %(levelname)s:%(message)s',
-            filename=path,
-            level=logging.INFO
-        )
+    def initLogger(self,path=None):
+        if(path):
+            logging.basicConfig(
+                format='%(asctime)s %(levelname)s:%(message)s',
+                filename=path,
+                level=logging.INFO
+            )
         self.logger = logging.getLogger(__name__)
 
