@@ -9,7 +9,6 @@ from augure import Worker
 if __name__ == '__main__':
 
     daemon = Worker('/tmp/daemon-example.pid')
-    daemon.loadConfiguration("/tmp/conf.conf")
 
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:

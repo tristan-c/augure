@@ -75,7 +75,7 @@ class Worker(Daemon):
             self.logger.error(e)
 
 
-    def initLogger(self,path="%s%s" % (os.path.expanduser("~"),"/.augure/augure.conf"))
+    def initLogger(self,path="%s%s" % (os.path.expanduser("~"),"/.augure/augure.conf")):
         logging.basicConfig(
             format='%(asctime)s %(levelname)s:%(message)s',
             filename=path,
