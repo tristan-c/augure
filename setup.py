@@ -36,7 +36,7 @@ setup(
 	name=u('augure'),
 	version=get_version(),
 	description=u('## Set description'),
-	long_description=open('README.rst').read(),
+	long_description=open('README.md').read(),
 	license=open('LICENSE').read(),
 	author=u('Tristan Carranante'),
 	author_email=u('tristan@carranante.name'),
