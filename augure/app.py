@@ -5,12 +5,15 @@ import os
 import json
 import logging
 
-import schedule, requests
+import schedule
+import requests
 from envelopes import Envelope, SMTP
 
 from .daemon3 import Daemon
 
+
 class Worker(Daemon):
+
     def __init__(self, *args, **kwargs):
         super(Worker, self).__init__(*args, **kwargs)
         self.config = None
@@ -20,11 +23,11 @@ class Worker(Daemon):
         if not self.config:
             self.config = self.load_configuration()
 
-        logPath = self.config.get("logPath",None)
+        logPath = self.config.get("logPath", None)
         if logPath:
             self.init_logger(logPath)
         else:
-            self.init_logger("%s%s" % (os.path.expanduser("~"),"/augure.log"))
+            self.init_logger("%s%s" % (os.path.expanduser("~"), "/augure.log"))
 
         self.logger.info("Augure is watching")
         schedule.every().minute.do(self.check)
@@ -45,25 +48,25 @@ class Worker(Daemon):
             if not r or r.status_code != 200:
                 message = "%s is not accessible" % (url)
                 if r and r.status_code:
-                    message = "%s, status %s" % (message,r.status_code)
+                    message = "%s, status %s" % (message, r.status_code)
                 self.logger.warning(message)
 
-                if self.config.get('emailRecipient',None):
+                if self.config.get('emailRecipient', None):
 
                     # if state was ok before (anti spam)
-                    if self.urlStates.get(url,True):
+                    if self.urlStates.get(url, True):
                         self.urlStates[url] = False
                         self.send_mail(message)
 
             else:
                 self.urlStates[url] = True
 
-    def send_mail(self,text):
+    def send_mail(self, text):
         self.logger.debug("Building mail")
 
         envelope = Envelope(
             from_addr=('augure@augure.nowhere'),
-            to_addr=self.config.get('emailRecipient',None),
+            to_addr=self.config.get('emailRecipient', None),
             subject='The Augure has spoken',
             text_body=text
         )
@@ -84,10 +87,11 @@ class Worker(Daemon):
         if os.path.isfile("/etc/augure/augure.conf"):
             configFile = "/etc/augure/augure.conf"
 
-        homeConfiguration = "%s%s" % (os.path.expanduser("~"),"/.augure/augure.conf")
+        homeConfiguration = "%s%s" % (
+            os.path.expanduser("~"), "/.augure/augure.conf")
         if os.path.isfile(homeConfiguration):
             configFile = homeConfiguration
-        
+
         if not configFile:
             raise Exception("No Configuration file found")
 
@@ -98,10 +102,9 @@ class Worker(Daemon):
                 return data
         except Exception as e:
             logging.error(e)
-            raise Exception("Error in %s: %s" % (configFile,e))
+            raise Exception("Error in %s: %s" % (configFile, e))
 
-
-    def init_logger(self,path=None):
+    def init_logger(self, path=None):
         if(path):
             logging.basicConfig(
                 format='%(asctime)s %(levelname)s:%(message)s',
@@ -109,4 +112,3 @@ class Worker(Daemon):
                 level=logging.WARNING
             )
         self.logger = logging.getLogger(__name__)
-
