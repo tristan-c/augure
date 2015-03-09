@@ -3,7 +3,7 @@
 import time, os , json, logging
 import schedule, requests
 from envelopes import Envelope, SMTP
-from .daemon3 import daemon as Daemon
+from .daemon3 import Daemon
 
 class Worker(Daemon):
     def __init__(self, *args, **kwargs):
@@ -13,13 +13,13 @@ class Worker(Daemon):
 
     def run(self):
         if not self.config:
-            self.config = self.loadConfiguration()
+            self.config = self.load_configuration()
 
         logPath = self.config.get("logPath",None)
         if logPath:
-            self.initLogger(logPath)
+            self.init_logger(logPath)
         else:
-            self.initLogger("%s%s" % (os.path.expanduser("~"),"/augure.log"))
+            self.init_logger("%s%s" % (os.path.expanduser("~"),"/augure.log"))
 
         self.logger.info("Augure is watching")
         schedule.every().minute.do(self.check)
@@ -48,12 +48,12 @@ class Worker(Daemon):
                     # if state was ok before (anti spam)
                     if self.urlStates.get(url,True):
                         self.urlStates[url] = False
-                        self.sendMail(message)
+                        self.send_mail(message)
 
             else:
                 self.urlStates[url] = True
 
-    def sendMail(self,text):
+    def send_mail(self,text):
         self.logger.debug("Building mail")
 
         envelope = Envelope(
@@ -72,7 +72,7 @@ class Worker(Daemon):
         except Exception as e:
             self.logger.error(e)
 
-    def loadConfiguration(self, filename=None):
+    def load_configuration(self, filename=None):
         configFile = None
         if filename and os.path.isfile(filename):
             configFile = filename
@@ -96,7 +96,7 @@ class Worker(Daemon):
             raise Exception("Error in %s: %s" % (configFile,e))
 
 
-    def initLogger(self,path=None):
+    def init_logger(self,path=None):
         if(path):
             logging.basicConfig(
                 format='%(asctime)s %(levelname)s:%(message)s',
