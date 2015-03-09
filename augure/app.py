@@ -1,8 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
-import time, os , json, logging
+import time
+import os
+import json
+import logging
+
 import schedule, requests
 from envelopes import Envelope, SMTP
+
 from .daemon3 import Daemon
 
 class Worker(Daemon):
