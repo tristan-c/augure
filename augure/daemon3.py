@@ -114,6 +114,20 @@ class Daemon:
                 print(str(err.args))
                 sys.exit(1)
 
+    def status(self):
+        # Get the pid from the pidfile
+        try:
+            with open(self.pidfile, 'r') as pf:
+
+                pid = int(pf.read().strip())
+        except IOError:
+            pid = None
+
+        if pid:
+            print("Augure is already running, pid: %i" % pid)
+        else:
+            print("Augure is not running")
+
     def restart(self):
         """Restart the daemon."""
         self.stop()
