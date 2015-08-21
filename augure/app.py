@@ -92,34 +92,34 @@ class Worker(Daemon):
             self.logger.error(e)
 
     def load_configuration(self, filename=None):
-        configFile = None
+        config_file = None
         if filename and os.path.isfile(filename):
-            configFile = filename
+            config_file = filename
         if os.path.isfile("/etc/augure/augure.conf"):
-            configFile = "/etc/augure/augure.conf"
+            config_file = "/etc/augure/augure.conf"
         if os.path.isfile("/etc/augure/augure.conf"):
-            configFile = "/etc/augure.conf")
+            config_file = "/etc/augure.conf"
 
         home_conf = "%s%s" % (os.path.expanduser("~"),"/.augure/augure.conf")
-        if os.path.isfile(homeConfiguration):
-            configFile = homeConfiguration
+        if os.path.isfile(home_conf):
+            config_file = home_conf
 
-        if not configFile:
+        if not config_file:
             raise Exception("No Configuration file found")
 
         try:
-            with open(configFile) as data_file:
+            with open(config_file) as data_file:
                 data = json.load(data_file)
                 self.config = data
                 return data
         except Exception as e:
             logging.error(e)
-            raise Exception("Error in %s: %s" % (configFile, e))
+            raise Exception("Error in %s: %s" % (config_file, e))
 
     def init_logger(self, path="/tmp/augure.log"):
         logging.basicConfig(
             format='%(asctime)s %(levelname)s:%(message)s',
             filename=path,
-            level=logging.INFO
+            level=logging.INFO)
             
         self.logger = logging.getLogger(__name__)
