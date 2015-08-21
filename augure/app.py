@@ -95,14 +95,15 @@ class Worker(Daemon):
         config_file = None
         if filename and os.path.isfile(filename):
             config_file = filename
-        if os.path.isfile("/etc/augure/augure.conf"):
-            config_file = "/etc/augure/augure.conf"
-        if os.path.isfile("/etc/augure/augure.conf"):
+        if not config_file and os.path.isfile("/etc/augure.conf"):
             config_file = "/etc/augure.conf"
+        if not config_file and os.path.isfile("/etc/augure/augure.conf"):
+            config_file = "/etc/augure/augure.conf"
 
-        home_conf = "%s%s" % (os.path.expanduser("~"),"/.augure/augure.conf")
-        if os.path.isfile(home_conf):
-            config_file = home_conf
+        if not config_file:
+            home_conf = "%s%s" % (os.path.expanduser("~"),"/.augure/augure.conf")
+            if os.path.isfile(home_conf):
+                config_file = home_conf
 
         if not config_file:
             raise Exception("No Configuration file found")
