@@ -45,13 +45,15 @@ If there is no config file Augure will not be happy =(
     "logPath": "/var/log/augure.log"
 }
 ```
+**Required:**  
+* **urls**: URLs to look for.  
+* **emailRecipient**: Mail Address Recipient for alerts.  
 
-**urls**: URLs to look for.  
-**emailRecipient**: Mail Address Recipient for alerts.  
-**emailServer**: Address of external SMTP server if your server doesn't have one.  
-**emailLogin"**: Login for external SMTP.  
-**emailPassword"**: Password for external SMTP.  
-**logPath"**: Path for logfile , default to /tmp/augure.log.
+**Optional:**  
+* **emailServer**: Address of external SMTP server if your server doesn't have one.  
+* **emailLogin"**: Login for external SMTP.  
+* **emailPassword"**: Password for external SMTP.  
+* **logPath"**: Path for logfile , default to /tmp/augure.log.
 
 ##License:
 
