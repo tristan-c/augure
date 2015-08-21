@@ -124,7 +124,7 @@ class Daemon:
             pid = None
 
         if pid:
-            print("Augure is already running, pid: %i" % pid)
+            print("Augure is running, pid: %i" % pid)
         else:
             print("Augure is not running")
 
