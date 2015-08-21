@@ -1,7 +1,7 @@
 Augure - Supervision at its dumbest
 ======
 
-Augure is a tiny daemon script to look if your websites are down (not answering with http code 200).
+Augure is a tiny daemon script to look if your websites are down (not answering with http code 200) then send you a email.
 
 ##Installation:
 
