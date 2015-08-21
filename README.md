@@ -25,7 +25,13 @@ augure stop
 augure status
 ```
 
-config file :
+##Config file :
+Augure will first search for 
+* /etc/augure.conf
+* /etc/augure/augure.conf
+* ~/.augure/augure.conf
+
+If there is no config file Augure will not be happy =(
 
 ```json
 {
