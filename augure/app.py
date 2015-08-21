@@ -16,21 +16,29 @@ class Worker(Daemon):
 
     def __init__(self, *args, **kwargs):
         super(Worker, self).__init__(*args, **kwargs)
-        self.config = None
-        self.urlStates = {}
 
-    def run(self):
-        if not self.config:
-            self.config = self.load_configuration()
+        self.config = self.load_configuration()
 
+        #check if external mail server
+        self.external_mail_server = False
+        if self.config.get("emailServer",None):
+            if self.config.get("emailLogin",None) and \
+               self.config.get("emailPassword",None):
+               self.external_mail_server = True
+
+        #logging
         logPath = self.config.get("logPath", None)
         if logPath:
             self.init_logger(logPath)
         else:
             self.init_logger("%s%s" % (os.path.expanduser("~"), "/augure.log"))
 
+        self.urlStates = {}
+
+    def run(self):
         self.logger.info("Augure is watching")
         schedule.every().minute.do(self.check)
+        self.check()
 
         while True:
             self.logger.debug("check pending job")
@@ -73,9 +81,17 @@ class Worker(Daemon):
 
         try:
             self.logger.debug("Sending mail")
-            # envelope.send('smtp.googlemail.com', login=self.config["emailLogin"],
-            #       password=self.config["emailPassword"], tls=True)
-            envelope.send('localhost', port=25)
+       
+            if self.external_mail_server:
+                envelope.send(
+                    self.config.get("emailServer"), 
+                    login=self.config["emailLogin"],
+                    password=self.config["emailPassword"], tls=True
+                )
+            else:
+                #if no mail in config we use local mail server
+                envelope.send('localhost', port=25)
+
             self.logger.debug("Mail sent")
         except Exception as e:
             self.logger.error(e)
@@ -109,6 +125,6 @@ class Worker(Daemon):
             logging.basicConfig(
                 format='%(asctime)s %(levelname)s:%(message)s',
                 filename=path,
-                level=logging.WARNING
+                level=logging.DEBUG
             )
         self.logger = logging.getLogger(__name__)
