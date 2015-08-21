@@ -26,7 +26,7 @@ augure status
 ```
 
 ##Config file :
-Augure will first search for 
+Augure will search for 
 * /etc/augure.conf
 * /etc/augure/augure.conf
 * ~/.augure/augure.conf
