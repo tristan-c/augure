@@ -6,6 +6,7 @@ Supervision at its dumbest
 
 config file :
 
+```json
 {
     "urls": ["http://first_url.com/",
         "http://second_url.com/",
@@ -16,3 +17,7 @@ config file :
     "emailPassword": "my_gmail_password",
     "logPath": "/var/log/augure.log"
 }
+```
+
+**urls**:
+**emailServer**:
