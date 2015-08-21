@@ -1,10 +1,10 @@
-augure - Supervision at its dumbest
+Augure - Supervision at its dumbest
 ======
 
 Augure is a tiny daemon script to look if your websites are down (not answering with http code 200).
 
-Installation:
-=====
+##Installation:
+
 Following instruction use a virtualenv, it's not a requirement.
 
 ```bash
@@ -46,5 +46,7 @@ config file :
 **emailLogin"**: Login for external SMTP.  
 **emailPassword"**: Password for external SMTP.  
 **logPath"**: Path for logfile , default to /tmp/augure.log.
+
+##License:
 
 The MIT License (MIT)  
