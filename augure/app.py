@@ -38,7 +38,7 @@ class Worker(Daemon):
         while True:
             self.logger.debug("check pending job")
             schedule.run_pending()
-            time.sleep(1)
+            time.sleep(5)
 
     def check(self):
         for url in self.config['urls']:
