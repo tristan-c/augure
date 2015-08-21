@@ -26,12 +26,7 @@ class Worker(Daemon):
                self.config.get("emailPassword",None):
                self.external_mail_server = True
 
-        #logging
-        logPath = self.config.get("logPath", None)
-        if logPath:
-            self.init_logger(logPath)
-        else:
-            self.init_logger("%s%s" % (os.path.expanduser("~"), "/augure.log"))
+        self.init_logger(self.config.get("logPath", None))
 
         self.urlStates = {}
 
@@ -102,9 +97,10 @@ class Worker(Daemon):
             configFile = filename
         if os.path.isfile("/etc/augure/augure.conf"):
             configFile = "/etc/augure/augure.conf"
+        if os.path.isfile("/etc/augure/augure.conf"):
+            configFile = "/etc/augure.conf")
 
-        homeConfiguration = "%s%s" % (
-            os.path.expanduser("~"), "/.augure/augure.conf")
+        home_conf = "%s%s" % (os.path.expanduser("~"),"/.augure/augure.conf")
         if os.path.isfile(homeConfiguration):
             configFile = homeConfiguration
 
@@ -120,11 +116,10 @@ class Worker(Daemon):
             logging.error(e)
             raise Exception("Error in %s: %s" % (configFile, e))
 
-    def init_logger(self, path=None):
-        if(path):
-            logging.basicConfig(
-                format='%(asctime)s %(levelname)s:%(message)s',
-                filename=path,
-                level=logging.DEBUG
-            )
+    def init_logger(self, path="/tmp/augure.log"):
+        logging.basicConfig(
+            format='%(asctime)s %(levelname)s:%(message)s',
+            filename=path,
+            level=logging.INFO
+            
         self.logger = logging.getLogger(__name__)
