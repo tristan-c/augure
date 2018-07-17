@@ -1,9 +1,10 @@
-Augure - Supervision at its dumbest
-======
+# Augure - Supervision at its dumbest
+
 
 Augure is a tiny daemon script to look if your websites are down (not answering with http code 200) then send you a email.
 
-##Installation:
+### Installation:
+
 
 Following instruction use a virtualenv, it's not a requirement.
 
@@ -25,8 +26,8 @@ augure stop
 augure status
 ```
 
-##Config file :
-Augure will search for 
+### Config file :
+Augure will search for
 * /etc/augure.conf
 * /etc/augure/augure.conf
 * ~/.augure/augure.conf
@@ -45,16 +46,16 @@ If there is no config file Augure will not be happy =(
     "logPath": "/var/log/augure.log"
 }
 ```
-**Required:**  
-* **urls**: URLs to look for.  
-* **emailRecipient**: Mail Address Recipient for alerts.  
+**Required:**
+* **urls**: URLs to look for.
+* **emailRecipient**: Mail Address Recipient for alerts.
 
-**Optional:**  
-* **emailServer**: Address of external SMTP server if your server doesn't have one.  
-* **emailLogin"**: Login for external SMTP.  
-* **emailPassword"**: Password for external SMTP.  
+**Optional:**
+* **emailServer**: Address of external SMTP server if your server doesn't have one.
+* **emailLogin"**: Login for external SMTP.
+* **emailPassword"**: Password for external SMTP.
 * **logPath"**: Path for logfile , default to /tmp/augure.log.
 
-##License:
+## License:
 
-The MIT License (MIT)  
+The MIT License (MIT)
